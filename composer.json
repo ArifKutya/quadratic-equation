@@ -1,0 +1,19 @@
+{
+    "name": "arif/squad-equation",
+    "description": "Project",
+    "autoload": {
+        "psr-4": {
+            "Arif\\SquadEquation\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arif",
+            "email": "arifkutq63@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^10.0",
+        "ext-http": "*"
+    }
+}
