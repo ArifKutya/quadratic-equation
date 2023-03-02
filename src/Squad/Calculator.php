@@ -11,9 +11,10 @@ class Calculator
      */
     public function parseEquation(string $equation): array|string
     {
-        if (preg_match('/(?P<a>\d+)?x\S2[+-](?P<b>\d+)x\W+(?P<c>\d+)=?0?/', $equation, $matches)) {
+        if (!preg_match('/(?P<a>-?\d+)?x\S2[+]?(?P<b>-?\d+)?x+?(?P<c>-?\d+)?x?=?/', $equation, $matches)) {
             throw new CalculatorParseEquationException ('Невалиден формат');
         }
+
         return [$matches['a'], $matches['b'], $matches['c']];
     }
 
@@ -35,3 +36,6 @@ class Calculator
         return [$x1, $x2];
     }
 }
+
+
+

@@ -3,29 +3,56 @@
 namespace Squad;
 
 use Arif\SquadEquation\Squad\Calculator;
-use Exception;
-use PhpParser\Builder\Class_;
+use Arif\SquadEquation\Squad\CalculatorParseEquationException;
 use PHPUnit\Framework\TestCase;
 
 class SquadEquationTest extends TestCase
 {
-    /**
-     * @throws Exception
-     */
-    public function testQuad()
+    private Calculator $parser;
+
+    protected function setUp(): void
     {
-        $calculator = new Calculator();
-        $equation = this->qu;
-        $expected1 = array(0.5, -2);
+        $this->parser = new Calculator();
+    }
 
-        $this->assertEquals($expected1, Calculator::quad($equation));
+    /**
+     * @dataProvider validEquationsProvider
+     * @throws CalculatorParseEquationException
+     */
+    public function testParseEquationValid($equation, $expected): void
+    {
+        $actual = $this->parser->parseEquation($equation);
+        $this->assertEquals($expected, $actual);
+    }
 
-        // Test a quadratic equation with no real solutions
-        $equation2 = "x^2 + 2x + 5 = 0";
+    public function validEquationsProvider(): array
+    {
+        return [
+            // Da vzima minus pri otricatelno chislo
+            ['2x^2-3x-4=0', [2, -3, -4]],
+            // Da vzima 1 samo kogato ima x
+            ['x^2+2x+1=0', [1, 2, 1]],
+            // Da vzima minus
+            ['3x^2+7x-6=0', [3, 7, -6]],
+        ];
+    }
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("No real solution");
+    /**
+     * @dataProvider invalidEquationsProvider
+     */
+    public function testParseEquationInvalid($equation, $expectedMessage): void
+    {
+        $this->expectException(CalculatorParseEquationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->parser->parseEquation($equation);
+    }
 
-        $result2 = Calculator::quad($equation2);
+    public function invalidEquationsProvider(): array
+    {
+        return [
+            ['2x+3x-4=0', 'Невалиден формат'],
+            ['x²+2y+1=0', 'Невалиден формат'],
+            ['3x²-7x', 'Невалиден формат'],
+        ];
     }
 }
