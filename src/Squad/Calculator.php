@@ -15,6 +15,10 @@ class Calculator
             throw new CalculatorParseEquationException ('Невалиден формат');
         }
 
+        if ($matches['a'] && $matches['b'] && $matches['c'] == null || '' ) {
+            return 1;
+        }
+
         return [$matches['a'], $matches['b'], $matches['c']];
     }
 
@@ -22,7 +26,7 @@ class Calculator
      * @param $a
      * @param $b
      * @param $c
-     * @return float[]|int[]
+     * @return array
      * @throws CalculatorDiscriminantException
      */
     public function findDiscriminant($a, $b, $c): array
@@ -31,8 +35,8 @@ class Calculator
         if ($discriminant < 0) {
             throw new CalculatorDiscriminantException("Няма реални корени");
         }
-        $x1 = (-$b + sqrt($discriminant)) / (2 * $a);
-        $x2 = (-$b - sqrt($discriminant)) / (2 * $a);
+        (float)$x1 = (-$b + sqrt($discriminant)) / (2 * $a);
+        (float)$x2 = (-$b - sqrt($discriminant)) / (2 * $a);
         return [$x1, $x2];
     }
 }
