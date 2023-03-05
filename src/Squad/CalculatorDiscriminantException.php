@@ -2,9 +2,9 @@
 
 namespace Arif\SquadEquation\Squad;
 
-use Arif\SquadEquation\Exceptions\Exceptions;
+use Exception;
 
-class CalculatorDiscriminantException extends Exceptions
+class CalculatorDiscriminantException extends Exception
 {
     public $message = "No real roots";
 }

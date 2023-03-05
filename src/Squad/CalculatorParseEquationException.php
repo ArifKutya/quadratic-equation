@@ -2,9 +2,9 @@
 
 namespace Arif\SquadEquation\Squad;
 
-use Arif\SquadEquation\Exceptions\Exceptions;
+use Exception;
 
-class CalculatorParseEquationException extends Exceptions
+class CalculatorParseEquationException extends Exception
 {
 public $message = "Invalid format";
 }
