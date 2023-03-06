@@ -4,7 +4,7 @@ namespace Arif\SquadEquation\Squad;
 
 use Exception;
 
-class CalculatorDiscriminantException extends Exception
+class CalculatorNoRealRootsException extends Exception
 {
     public $message = "No real roots";
 }

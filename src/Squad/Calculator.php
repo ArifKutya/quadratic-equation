@@ -6,7 +6,7 @@ class Calculator
 {
     /**
      * @throws CalculatorParseEquationException
-     * @throws CalculatorDiscriminantException
+     * @throws CalculatorNoRealRootsException
      */
     public function quad($equation): array
     {
@@ -16,9 +16,9 @@ class Calculator
         $c = $values[2];
         $discriminant = $this->findDiscriminant($a, $b, $c);
         if ($discriminant >= 0) {
-            $roots = $this->findRealRoots($a, $b, $discriminant);
+            $roots = $this->calculateRoots($a, $b, $discriminant);
         } else {
-            throw new CalculatorDiscriminantException("Няма реални корени");
+            throw new CalculatorNoRealRootsException("Няма реални корени");
         }
         return $roots;
     }
@@ -59,7 +59,7 @@ class Calculator
      * @param $discriminant
      * @return float[]|int[]
      */
-    private function findRealRoots($a, $b, $discriminant): array
+    private function calculateRoots($a, $b, $discriminant): array
     {
         (float)$x1 = (-$b + sqrt($discriminant)) / (2 * $a);
         (float)$x2 = (-$b - sqrt($discriminant)) / (2 * $a);
