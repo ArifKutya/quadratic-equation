@@ -31,6 +31,7 @@ class Calculator
     private function parseEquation($equation): array|string
     {
         $pattern = '/(?P<a>-?\d+)?x\S2[+]?(?P<b>-?\d+)?x+?(?P<c>-?\d+)?x?=?/';
+
         if (preg_match($pattern, $equation, $matches)) {
             $a = !empty(trim($matches[1])) ? floatval($matches[1]) : 1;
             $b = !empty(trim($matches[2])) ? floatval($matches[2]) : 1;
