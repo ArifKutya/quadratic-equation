@@ -15,12 +15,7 @@ class Calculator
         $b = $values[1];
         $c = $values[2];
         $discriminant = $this->findDiscriminant($a, $b, $c);
-        if ($discriminant >= 0) {
-            $roots = $this->calculateRoots($a, $b, $discriminant);
-        } else {
-            throw new CalculatorNoRealRootsException("Няма реални корени");
-        }
-        return $roots;
+        return $this->calculateRoots($a, $b, $discriminant);
     }
 
     /**
@@ -30,15 +25,22 @@ class Calculator
      */
     private function parseEquation($equation): array|string
     {
-        $pattern = '/(?P<a>-?\d+)?x\S2[+]?(?P<b>-?\d+)?x+?(?P<c>-?\d+)?x?=?/';
+        $pattern = '/^(?P<a>[-]?(x)?([0-9]+)?x)\^2[+]?((?P<b>([-]?[0-9]+)?(x)?))?[+]?((?P<c>[-]?([0-9]+)?(x)?))?/';
 
         if (preg_match($pattern, $equation, $matches)) {
-            $a = !empty(trim($matches[1])) ? floatval($matches[1]) : 1;
-            $b = !empty(trim($matches[2])) ? floatval($matches[2]) : 1;
-            $c = !empty(trim($matches[3])) ? floatval($matches[3]) : 1;
+
+            $a = $matches['a'] === '-x' ? -1 : ($matches['a'] === '' || $matches['a'] === null
+            || $matches['a'] === 'x' ? 1 : (int)$matches['a']);
+
+            $b = $matches['b'] === '-x' ? -1 : ($matches['b'] === '' || $matches['b'] === null
+            || $matches['b'] === 'x' ? 1 : (int)$matches['b']);
+
+            $c = $matches['c'] === '-x' ? -1 : ($matches['c'] === '' || $matches['c'] === null
+            || $matches['c'] === 'x' ? 1 : (int)$matches['c']);
+
             return array($a, $b, $c);
         } else {
-           return throw new CalculatorParseEquationException ('Невалиден формат');
+            throw new CalculatorParseEquationException ('Невалиден формат');
         }
     }
 
@@ -47,10 +49,16 @@ class Calculator
      * @param $b
      * @param $c
      * @return float|int
+     * @throws CalculatorNoRealRootsException
      */
     private function findDiscriminant($a, $b, $c): float|int
     {
-        return $b * $b - 4 * $a * $c;
+        $discriminant = $b * $b - 4 * $a * $c;
+
+        if ($discriminant < 0) {
+            throw new CalculatorNoRealRootsException("Няма реални корени");
+        }
+        return $discriminant;
     }
 
     /**
