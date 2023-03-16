@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'ac8281db75f72bcbc7c2329b0f2c1c87057c9a42',
         'name' => 'arif/squad-equation',
         'dev' => true,
     ),
     'versions' => array(
         'arif/squad-equation' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'ac8281db75f72bcbc7c2329b0f2c1c87057c9a42',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(

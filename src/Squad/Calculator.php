@@ -20,28 +20,24 @@ class Calculator
 
     /**
      * @param $equation
-     * @return array|string
+     * @return array
      * @throws CalculatorParseEquationException
      */
-    private function parseEquation($equation): array|string
+    private function parseEquation($equation): array
     {
-        $pattern = '/^(?P<a>[-]?(x)?([0-9]+)?x)\^2[+]?((?P<b>([-]?[0-9]+)?(x)?))?[+]?((?P<c>[-]?([0-9]+)?(x)?))?/';
+        $pattern = '/(?P<a>[+-]?\d*x)\^2\s*?(?P<b>[+-]?\s*?\d*)x?\s*(?P<c>[+-]?\s*\d*)\s*/';
 
-        if (preg_match($pattern, $equation, $matches)) {
-
-            $a = $matches['a'] === '-x' ? -1 : ($matches['a'] === '' || $matches['a'] === null
-            || $matches['a'] === 'x' ? 1 : (int)$matches['a']);
-
-            $b = $matches['b'] === '-x' ? -1 : ($matches['b'] === '' || $matches['b'] === null
-            || $matches['b'] === 'x' ? 1 : (int)$matches['b']);
-
-            $c = $matches['c'] === '-x' ? -1 : ($matches['c'] === '' || $matches['c'] === null
-            || $matches['c'] === 'x' ? 1 : (int)$matches['c']);
-
-            return array($a, $b, $c);
-        } else {
+        if (!preg_match($pattern, $equation, $matches)) {
             throw new CalculatorParseEquationException ('Невалиден формат');
         }
+        $a = $matches['a'];
+        $b = (int)filter_var($matches['b'], FILTER_SANITIZE_NUMBER_INT);
+        $c = (int)filter_var($matches['c'], FILTER_SANITIZE_NUMBER_INT);
+
+        if ($a == '-x' || $a == 'x') {
+            $a = -1 || 1;
+        }
+        return [$a, $b, $c];
     }
 
     /**
@@ -74,6 +70,10 @@ class Calculator
         return [$x1, $x2];
     }
 }
+
+$test = new Calculator();
+$test->quad('x^2');
+print_r($test);
 
 
 
