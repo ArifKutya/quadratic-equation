@@ -71,9 +71,6 @@ class Calculator
     }
 }
 
-$test = new Calculator();
-$test->quad('x^2');
-print_r($test);
 
 
 
