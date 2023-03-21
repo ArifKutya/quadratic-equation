@@ -25,18 +25,40 @@ class Calculator
      */
     private function parseEquation($equation): array
     {
-        $pattern = '/(?P<a>[+-]?\d*x)\^2\s*?(?P<b>[+-]?\s*?\d*)x?\s*(?P<c>[+-]?\s*\d*)\s*/';
+        $pattern = '/(?P<a>[-]?\d*\.?\d*?x?)\^2[+]?(?P<b>[-]?\d*\.?\d*x?)?[+]?(?P<c>[-]?\d*\.?\d*x?)?/';
 
         if (!preg_match($pattern, $equation, $matches)) {
             throw new CalculatorParseEquationException ('Невалиден формат');
         }
+
         $a = $matches['a'];
-        $b = (int)filter_var($matches['b'], FILTER_SANITIZE_NUMBER_INT);
-        $c = (int)filter_var($matches['c'], FILTER_SANITIZE_NUMBER_INT);
+        $b = $matches['b'];
+        $c = $matches['c'];
 
         if ($a == '-x' || $a == 'x') {
             $a = -1 || 1;
+        } elseif (filter_var($a, FILTER_SANITIZE_NUMBER_FLOAT)) {
+            $a =(float)$a;
+        }  else {
+            $a = (int)filter_var($a, FILTER_SANITIZE_NUMBER_INT);
         }
+
+        if ($b == '-x' || $b == 'x') {
+            $b = -1 || 1;
+        } elseif (filter_var($b, FILTER_SANITIZE_NUMBER_FLOAT)) {
+            $b =(float)$b;
+        } else {
+            $b = (int)filter_var($b, FILTER_SANITIZE_NUMBER_INT);
+        }
+
+        if ($c == '-x' || $c == 'x') {
+            $c = -1 || 1;
+        } elseif (filter_var($c, FILTER_SANITIZE_NUMBER_FLOAT)) {
+            $c =(float)$c;
+        } else {
+            $c = (int)filter_var($c, FILTER_SANITIZE_NUMBER_INT);
+        }
+
         return [$a, $b, $c];
     }
 
